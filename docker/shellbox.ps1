@@ -1,5 +1,11 @@
+#!/usr/local/bin/powershell
 # Run a shellbox container
 # mount resources directory from OneDrive and do it on both windows and osx
+param(
+    [string]$container = "shellbox" # shellbox it is by default
+)
+
+Write-Output "Running container: $container"
 
 $localResourcesPath = false
 $userName = $(whoami)
@@ -16,6 +22,7 @@ if (Test-Path /usr/bin/uname) {
     $localResourcesPath = "/c/Users/$userName/OneDrive/opt/docker-scripts/resources"
 }
 
-$cmd = "docker run -v $($localResourcesPath):/resources -t -i fxlv/debian_wheezy:shellbox bash"
+$cmd = "docker run -v $($localResourcesPath):/resources -t -i fxlv/debian_wheezy:$($container) bash"
+Write-Output $cmd # debug purpose only
 
 Invoke-Expression $cmd

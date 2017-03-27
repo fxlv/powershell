@@ -1,5 +1,5 @@
-if ( Test-Path /usr/bin/uname ){
-    write-host "This script is meant for windows only"
+if ( -not (Get-Command docker-machine.exe | Select-String docker-machine.exe -q)) {
+    write-host -ForegroundColor red  "docker-machine.exe not found. Do you have it installed?"
     exit
 }
 

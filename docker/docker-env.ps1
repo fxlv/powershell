@@ -3,6 +3,18 @@ if ( -not (Get-Command docker-machine.exe | Select-String docker-machine.exe -q)
     exit
 }
 
+# there can be a case of broken docker-machine environment where you 
+# run docker-machine and it takes forever to get any output 
+# for that, we first run docker-machine.exe with a timeout of 2 sec
+
+$job = Start-Job { docker-machine.exe ls | Out-Null } 
+if ( -not (Wait-Job $job -Timeout 1 )){
+	Write-Host -ForegroundColor red  "The command: 'docker-machine.exe ls' is timing out"
+	exit
+}
+Stop-Job $job
+receive-job $job
+
 function vm_is_running {
 	docker-machine.exe status default | Select-String -Pattern Running -Quiet
 }

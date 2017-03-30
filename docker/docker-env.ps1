@@ -49,4 +49,6 @@ if ( docker-machine ls | select-string -Pattern default -quiet ) {
 	
 } else {
 	write-output "Docker machine is missing."
+	Write-Output "Create it using following command:"
+	Write-Output "docker-machine.exe create default --driver=virtualbox"
 }
